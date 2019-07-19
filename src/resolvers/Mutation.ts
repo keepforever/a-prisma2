@@ -73,6 +73,24 @@ export const Mutation = mutationType({
       },
     })
 
+    t.field('createProfile', {
+      type: 'Profile',
+      args: {
+        description: stringArg(),
+        isVerified: booleanArg(),
+      },
+      resolve: (_parent, { description, isVerified }, ctx) => {
+        const userId = getUserId(ctx)
+        return ctx.photon.profiles.create({
+          data: {
+            description,
+            isVerified,
+            author: { connect: { id: userId } },
+          },
+        })
+      },
+    })
+
     t.field('deletePost', {
       type: 'Post',
       nullable: true,

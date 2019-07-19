@@ -9,6 +9,7 @@ type AuthPayload {
 
 type Mutation {
   createDraft(content: String, title: String): Post!
+  createProfile(description: String, isVerified: Boolean): Profile!
   deletePost(id: ID): Post
   login(email: String, password: String): AuthPayload!
   publish(id: ID): Post
@@ -23,11 +24,19 @@ type Post {
   title: String!
 }
 
+type Profile {
+  author: User
+  description: String
+  id: ID!
+  isVerified: Boolean!
+}
+
 type Query {
   feed: [Post!]!
   feedUsers: [User!]!
   filterPosts(searchString: String): [Post!]!
   me: User!
+  overComplexMe: User!
   post(id: ID): Post
 }
 
@@ -36,4 +45,5 @@ type User {
   id: ID!
   name: String
   posts(after: String, before: String, first: Int, last: Int, skip: Int): [Post!]
+  profile: Profile
 }

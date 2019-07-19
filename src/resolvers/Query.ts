@@ -15,6 +15,38 @@ export const Query = queryType({
       },
     })
 
+    t.field('overComplexMe', {
+      type: 'User',
+      resolve: async (_parent, _args, ctx) => {
+        const userId = getUserId(ctx)
+        const whoAmI = await ctx.photon.users.findOne({
+          where: {
+            id: userId,
+          },
+        })
+
+        const posts = await ctx.photon.users.findOne({
+          where: {
+            id: userId,
+          },
+        }).posts()
+
+        console.log(" #### #### #### ", '\n')
+        console.log(" #### #### #### ", '\n')
+        console.log(" posts ", posts)
+        console.log("whoAmI = ", whoAmI)
+        console.log(" #### #### #### ")
+        console.log(" #### #### #### ")
+
+
+        return ctx.photon.users.findOne({
+          where: {
+            email: whoAmI.email,
+          },
+        })
+      },
+    })
+
     t.list.field('feed', {
       type: 'Post',
       resolve: (_parent, _args, ctx) => {
