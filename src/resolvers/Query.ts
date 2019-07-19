@@ -72,16 +72,23 @@ export const Query = queryType({
         return ctx.photon.posts.findMany({
           where: {
             OR: [
+              // {
+              //   title: {
+              //     contains: searchString,
+              //   },
+              // },
               {
-                title: {
-                  contains: searchString,
-                },
+                isGood: {
+                  equals: false
+                }
               },
               {
-                content: {
-                  contains: searchString,
-                },
-              },
+                author: {
+                  name: {
+                    contains: searchString
+                  }
+                }
+              }
             ],
           },
         })
