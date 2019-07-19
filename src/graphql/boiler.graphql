@@ -1,0 +1,29 @@
+# Write your query or mutation here
+mutation MySignup {
+  signup(
+    name: "b"
+    email: "b"
+    password: "b"
+  ) {
+    token
+    user{
+      id
+      name
+    }
+  }
+}
+
+mutation MyLogin {
+  login(email:"b", password:"b") {
+    token
+    user{
+      name
+    }
+  }
+}
+
+query MyFeed {
+  feed {
+    published
+  }
+}
