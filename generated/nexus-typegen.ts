@@ -99,8 +99,9 @@ export interface NexusGenArgTypes {
       password?: string | null; // String
     }
     signup: { // args
+      arenaHandle?: string | null; // String
       email?: string | null; // String
-      isGood?: boolean | null; // Boolean
+      isAdmin?: boolean | null; // Boolean
       name?: string | null; // String
       password?: string | null; // String
     }

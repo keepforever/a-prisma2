@@ -11,7 +11,8 @@ export const Mutation = mutationType({
         name: stringArg({ nullable: true }),
         email: stringArg(),
         password: stringArg(),
-        isGood: booleanArg()
+        isAdmin: booleanArg(),
+        arenaHandle: stringArg()
       },
       resolve: async (_parent, { name, email, password }, ctx) => {
         const hashedPassword = await hash(password, 10)
