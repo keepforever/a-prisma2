@@ -1,0 +1,79 @@
+type User {
+  id: ID! @unique
+  name: String!
+  email: String! @unique
+  password: String!
+  isAdmin: Boolean @default(value: "false")
+  userInfo: UserInfo
+  decks: [Deck!]!
+  votes: [Vote!]!
+  userSettings: UserSettings
+  connections: [Connection!]!
+  inbox: [Message!]! @relation(name: "RecievedMessages" , onDelete: SET_NULL)
+  outbox: [Message!]! @relation(name: "WrittenMessages" , onDelete: SET_NULL)
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Deck {
+  id: ID! @unique
+  author: User!
+  deckList: String!
+  deckDetails: String!
+  deckName: String! @default(value: "default deck name")
+  score: Int! @default(value: "0" )
+  raw: String
+}
+
+type Vote {
+  id: ID! @unique
+  deck: Deck!
+  author: User!
+  quality: Boolean!
+}
+
+type UserInfo {
+  id: ID! @unique
+  user: User!
+  about: String!
+  timeZone: String!
+}
+
+type UserSettings {
+  id: ID! @unique
+  user: User!
+  darkMode: Boolean @default(value: "false")
+  autoAccept: Boolean @default(value: "false")
+}
+
+## Messages ##
+type Message {
+  id: ID! @unique
+  author: User! @relation(name: "WrittenMessages", onDelete: SET_NULL)
+  recipient: User! @relation(name: "RecievedMessages" , onDelete: SET_NULL)
+  type: String! @default(value: "default-message-type")
+  text: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# User to User
+type Connection {
+  id: ID! @unique
+  allowance: Int! @default(value: "42" )
+  friend: User!
+  about: String! @default(value: "default-friends-because")
+  verified: Boolean @default(value: "false")
+  accepted: Boolean @default(value: "false")
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# Default Value Guide
+#
+# type Story {
+#   isPublished: Boolean @default(value: "false")
+#   someNumber: Int! @default(value: "42")
+#   title: String! @default(value: "My New Post")
+#   publishDate: DateTime! @default(value: "2018-01-26")
+# }
