@@ -1,16 +1,16 @@
 import { AuthPayload } from './AuthPayload'
 import { Mutation } from './Mutation'
-import { Post } from './Post'
+import { Deck } from './Deck'
 import { Query } from './Query'
 import { User } from './User'
-import { Profile } from './Profile'
+import { Comment } from './Comment'
 
 
 export const resolvers = {
   Query,
-  User,
-  Post,
   Mutation,
   AuthPayload,
-  Profile
+  User,
+  Deck,
+  Comment
 }

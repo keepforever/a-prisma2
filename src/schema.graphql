@@ -7,43 +7,39 @@ type AuthPayload {
   user: User!
 }
 
+type Comment {
+  author: User
+  content: String
+  deck: Deck
+  id: ID!
+}
+
+type Deck {
+  author: User
+  comments(after: String, before: String, first: Int, last: Int, skip: Int): [Comment!]
+  id: ID!
+  list: String
+  title: String
+}
+
 type Mutation {
-  createDraft(content: String, title: String): Post!
-  createProfile(description: String, isVerified: Boolean): Profile!
-  deletePost(id: ID): Post
   login(email: String, password: String): AuthPayload!
-  publish(id: ID): Post
   signup(email: String, isGood: Boolean, name: String, password: String): AuthPayload!
 }
 
-type Post {
-  author: User
-  id: ID!
-  isGood: Boolean!
-  published: Boolean!
-  title: String!
-}
-
-type Profile {
-  author: User
-  description: String
-  id: ID!
-  isVerified: Boolean!
-}
-
 type Query {
-  feed: [Post!]!
   feedUsers: [User!]!
-  filterPosts(searchString: String): [Post!]!
   me: User!
   overComplexMe: User!
-  post(id: ID): Post
+  singleDeck(id: ID): Deck
 }
 
 type User {
+  arenaHandle: String
+  decks(after: String, before: String, first: Int, last: Int, skip: Int): [Deck!]
   email: String!
   id: ID!
+  isAdmin: Boolean!
   name: String
-  posts(after: String, before: String, first: Int, last: Int, skip: Int): [Post!]
-  profile: Profile
+  password: String!
 }

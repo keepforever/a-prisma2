@@ -25,15 +25,15 @@ export const Query = queryType({
           },
         })
 
-        const posts = await ctx.photon.users.findOne({
+        const decks = await ctx.photon.users.findOne({
           where: {
             id: userId,
           },
-        }).posts()
+        }).decks()
 
         console.log(" #### #### #### ", '\n')
         console.log(" #### #### #### ", '\n')
-        console.log(" posts ", posts)
+        console.log(" posts ", decks)
         console.log("whoAmI = ", whoAmI)
         console.log(" #### #### #### ")
         console.log(" #### #### #### ")
@@ -47,11 +47,15 @@ export const Query = queryType({
       },
     })
 
-    t.list.field('feed', {
-      type: 'Post',
-      resolve: (_parent, _args, ctx) => {
-        return ctx.photon.posts.findMany({
-          where: { published: true },
+    t.field('singleDeck', {
+      type: 'Deck',
+      nullable: true,
+      args: { id: idArg() },
+      resolve: (_parent, { id }, ctx) => {
+        return ctx.photon.decks.findOne({
+          where: {
+            id,
+          },
         })
       },
     })
@@ -63,49 +67,45 @@ export const Query = queryType({
       },
     })
 
-    t.list.field('filterPosts', {
-      type: 'Post',
-      args: {
-        searchString: stringArg({ nullable: true }),
-      },
-      resolve: (_parent, { searchString }, ctx) => {
-        return ctx.photon.posts.findMany({
-          where: {
-            OR: [
-              // {
-              //   title: {
-              //     contains: searchString,
-              //   },
-              // },
-              {
-                isGood: {
-                  equals: false
-                }
-              },
-              {
-                author: {
-                  name: {
-                    contains: searchString
-                  }
-                }
-              }
-            ],
-          },
-        })
-      },
-    })
+    // t.list.field('feed', {
+    //   type: 'Post',
+    //   resolve: (_parent, _args, ctx) => {
+    //     return ctx.photon.posts.findMany({
+    //       where: { published: true },
+    //     })
+    //   },
+    // })
 
-    t.field('post', {
-      type: 'Post',
-      nullable: true,
-      args: { id: idArg() },
-      resolve: (_parent, { id }, ctx) => {
-        return ctx.photon.posts.findOne({
-          where: {
-            id,
-          },
-        })
-      },
-    })
+    // t.list.field('filterPosts', {
+    //   type: 'Post',
+    //   args: {
+    //     searchString: stringArg({ nullable: true }),
+    //   },
+    //   resolve: (_parent, { searchString }, ctx) => {
+    //     return ctx.photon.posts.findMany({
+    //       where: {
+    //         OR: [
+    //           // {
+    //           //   title: {
+    //           //     contains: searchString,
+    //           //   },
+    //           // },
+    //           {
+    //             isGood: {
+    //               equals: false
+    //             }
+    //           },
+    //           {
+    //             author: {
+    //               name: {
+    //                 contains: searchString
+    //               }
+    //             }
+    //           }
+    //         ],
+    //       },
+    //     })
+    //   },
+    // })
   },
 })

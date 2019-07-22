@@ -55,65 +55,65 @@ export const Mutation = mutationType({
       },
     })
 
-    t.field('createDraft', {
-      type: 'Post',
-      args: {
-        title: stringArg(),
-        content: stringArg({ nullable: true }),
-      },
-      resolve: (_parent, { title }, ctx) => {
-        const userId = getUserId(ctx)
-        return ctx.photon.posts.create({
-          data: {
-            title,
-            published: false,
-            author: { connect: { id: userId } },
-          },
-        })
-      },
-    })
+    // t.field('createDraft', {
+    //   type: 'Post',
+    //   args: {
+    //     title: stringArg(),
+    //     content: stringArg({ nullable: true }),
+    //   },
+    //   resolve: (_parent, { title }, ctx) => {
+    //     const userId = getUserId(ctx)
+    //     return ctx.photon.posts.create({
+    //       data: {
+    //         title,
+    //         published: false,
+    //         author: { connect: { id: userId } },
+    //       },
+    //     })
+    //   },
+    // })
 
-    t.field('createProfile', {
-      type: 'Profile',
-      args: {
-        description: stringArg(),
-        isVerified: booleanArg(),
-      },
-      resolve: (_parent, { description, isVerified }, ctx) => {
-        const userId = getUserId(ctx)
-        return ctx.photon.profiles.create({
-          data: {
-            description,
-            isVerified,
-            author: { connect: { id: userId } },
-          },
-        })
-      },
-    })
+    // t.field('createProfile', {
+    //   type: 'Profile',
+    //   args: {
+    //     description: stringArg(),
+    //     isVerified: booleanArg(),
+    //   },
+    //   resolve: (_parent, { description, isVerified }, ctx) => {
+    //     const userId = getUserId(ctx)
+    //     return ctx.photon.profiles.create({
+    //       data: {
+    //         description,
+    //         isVerified,
+    //         author: { connect: { id: userId } },
+    //       },
+    //     })
+    //   },
+    // })
 
-    t.field('deletePost', {
-      type: 'Post',
-      nullable: true,
-      args: { id: idArg() },
-      resolve: (_parent, { id }, ctx) => {
-        return ctx.photon.posts.delete({
-          where: {
-            id,
-          },
-        })
-      },
-    })
+    // t.field('deletePost', {
+    //   type: 'Post',
+    //   nullable: true,
+    //   args: { id: idArg() },
+    //   resolve: (_parent, { id }, ctx) => {
+    //     return ctx.photon.posts.delete({
+    //       where: {
+    //         id,
+    //       },
+    //     })
+    //   },
+    // })
 
-    t.field('publish', {
-      type: 'Post',
-      nullable: true,
-      args: { id: idArg() },
-      resolve: (_parent, { id }, ctx) => {
-        return ctx.photon.posts.update({
-          where: { id },
-          data: { published: true },
-        })
-      },
-    })
+    // t.field('publish', {
+    //   type: 'Post',
+    //   nullable: true,
+    //   args: { id: idArg() },
+    //   resolve: (_parent, { id }, ctx) => {
+    //     return ctx.photon.posts.update({
+    //       where: { id },
+    //       data: { published: true },
+    //     })
+    //   },
+    // })
   },
 })

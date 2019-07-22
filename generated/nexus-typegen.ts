@@ -29,9 +29,9 @@ export interface NexusGenRootTypes {
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
+  Comment: photon.Comment;
+  Deck: photon.Deck;
   Mutation: {};
-  Post: photon.Post;
-  Profile: photon.Profile;
   Query: {};
   User: photon.User;
   String: string;
@@ -49,63 +49,54 @@ export interface NexusGenFieldTypes {
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
+  Comment: { // field return type
+    author: NexusGenRootTypes['User'] | null; // User
+    content: string | null; // String
+    deck: NexusGenRootTypes['Deck'] | null; // Deck
+    id: string; // ID!
+  }
+  Deck: { // field return type
+    author: NexusGenRootTypes['User'] | null; // User
+    comments: NexusGenRootTypes['Comment'][] | null; // [Comment!]
+    id: string; // ID!
+    list: string | null; // String
+    title: string | null; // String
+  }
   Mutation: { // field return type
-    createDraft: NexusGenRootTypes['Post']; // Post!
-    createProfile: NexusGenRootTypes['Profile']; // Profile!
-    deletePost: NexusGenRootTypes['Post'] | null; // Post
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
-    publish: NexusGenRootTypes['Post'] | null; // Post
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
-  Post: { // field return type
-    author: NexusGenRootTypes['User'] | null; // User
-    id: string; // ID!
-    isGood: boolean; // Boolean!
-    published: boolean; // Boolean!
-    title: string; // String!
-  }
-  Profile: { // field return type
-    author: NexusGenRootTypes['User'] | null; // User
-    description: string | null; // String
-    id: string; // ID!
-    isVerified: boolean; // Boolean!
-  }
   Query: { // field return type
-    feed: NexusGenRootTypes['Post'][]; // [Post!]!
     feedUsers: NexusGenRootTypes['User'][]; // [User!]!
-    filterPosts: NexusGenRootTypes['Post'][]; // [Post!]!
     me: NexusGenRootTypes['User']; // User!
     overComplexMe: NexusGenRootTypes['User']; // User!
-    post: NexusGenRootTypes['Post'] | null; // Post
+    singleDeck: NexusGenRootTypes['Deck'] | null; // Deck
   }
   User: { // field return type
+    arenaHandle: string | null; // String
+    decks: NexusGenRootTypes['Deck'][] | null; // [Deck!]
     email: string; // String!
     id: string; // ID!
+    isAdmin: boolean; // Boolean!
     name: string | null; // String
-    posts: NexusGenRootTypes['Post'][] | null; // [Post!]
-    profile: NexusGenRootTypes['Profile'] | null; // Profile
+    password: string; // String!
   }
 }
 
 export interface NexusGenArgTypes {
+  Deck: {
+    comments: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
+      skip?: number | null; // Int
+    }
+  }
   Mutation: {
-    createDraft: { // args
-      content?: string | null; // String
-      title?: string | null; // String
-    }
-    createProfile: { // args
-      description?: string | null; // String
-      isVerified?: boolean | null; // Boolean
-    }
-    deletePost: { // args
-      id?: string | null; // ID
-    }
     login: { // args
       email?: string | null; // String
       password?: string | null; // String
-    }
-    publish: { // args
-      id?: string | null; // ID
     }
     signup: { // args
       email?: string | null; // String
@@ -115,15 +106,12 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
-    filterPosts: { // args
-      searchString?: string | null; // String
-    }
-    post: { // args
+    singleDeck: { // args
       id?: string | null; // ID
     }
   }
   User: {
-    posts: { // args
+    decks: { // args
       after?: string | null; // String
       before?: string | null; // String
       first?: number | null; // Int
@@ -138,7 +126,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "AuthPayload" | "Mutation" | "Post" | "Profile" | "Query" | "User";
+export type NexusGenObjectNames = "AuthPayload" | "Comment" | "Deck" | "Mutation" | "Query" | "User";
 
 export type NexusGenInputNames = never;
 
