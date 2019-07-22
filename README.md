@@ -3,8 +3,10 @@ common cli commands
 ```sh
 prisma2 lift save --name '<whatever_name>'
 ```
-prisma2 lift save --name 'add-profile-model'
 
+```sh
+prisma2 lift save --name 'add-profile-model'
+```
 
 ```sh
 prisma2 lift up

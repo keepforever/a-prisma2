@@ -16,6 +16,21 @@ datasource db {
 }
 ```
 
+2. One your PostgreSQL backend is up and running, you need to create the tables.  This is facilitated by the `prisma2 cli`
+
+  - instantiate your migration:
+```sh
+prisma2 lift save --name '<whatever_name>'
+```
+ - run migration
+```sh
+prisma2 lift save --name 'add-profile-model'
+```
+
+Afterwards (and assuming a `success` message), if you were to connect to your database (for example with the popular [tableplus.io](https://tableplus.io/)), you should see the migration changes reflected in empty tables.  
+
+
+
 
 # Fresh Start Protocol
 When you want to erase the data and data volume associated with the container you originally created run:
@@ -24,4 +39,4 @@ When you want to erase the data and data volume associated with the container yo
 docker rm <container_name>
 docker volume rm pgdata
 ```
-then, begin again at step 1 at the top. 
+then, begin again at step 1 at the top.
