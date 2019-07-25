@@ -14,12 +14,13 @@ export const Mutation = mutationType({
         isAdmin: booleanArg(),
         arenaHandle: stringArg()
       },
-      resolve: async (_parent, { name, email, password }, ctx) => {
+      resolve: async (_parent, { name, email, password, arenaHandle }, ctx) => {
         const hashedPassword = await hash(password, 10)
         const user = await ctx.photon.users.create({
           data: {
             name,
             email,
+            arenaHandle,
             password: hashedPassword,
           },
         })
