@@ -1,10 +1,7 @@
 # Failed listMigrations at 2019-07-22T01:21:49.158Z
-## RPC Input One Line
-```json
-{"id":1,"jsonrpc":"2.0","method":"listMigrations","params":{"projectInfo":"","sourceConfig":"datasource db {\n    provider = \"postgresql\"\n    url      = \"postgresql://postgres:postgres@localhost:5432/prisma_two_db?schema=prisma_two_db_schema\"\n}\n\ngenerator photonjs {\n    provider = \"photonjs\"\n}\n\ngenerator nexus_prisma {\n  provider = \"nexus-prisma\"\n  output   = \"node_modules/@generated/nexus-prisma\"\n}\n\nmodel User {\n    id           String  @id @default(cuid())\n    name         String?\n    email        String  @unique\n    arenaHandle  String?\n    password     String\n    isAdmin      Boolean @default(false)\n    decks        Deck[]\n}\n\nmodel Deck {\n    id         String  @id @default(cuid())\n    title      String?\n    list       String?\n    comments   Comment[]\n    author     User?\n\n}\n\nmodel Comment {\n    id        String  @id @default(cuid())\n    content   String?\n    author    User?\n    deck      Deck?\n}\n"}}
-```
 
-## RPC Input Readable
+## RPC Input One Line
+
 ```json
 {
   "id": 1,
@@ -17,13 +14,28 @@
 }
 ```
 
+## RPC Input Readable
+
+```json
+{
+  "id": 1,
+  "jsonrpc": "2.0",
+  "method": "listMigrations",
+  "params": {
+    "projectInfo": "",
+    "sourceConfig": "datasource db {\n    provider = \"postgresql\"\n    url      = \"postgresql://postgres:postgres@localhost:5432/prisma_two_db?schema=prisma_two_db_schema\"\n}\n\ngenerator photonjs {\n    provider = \"photonjs\"\n}\n\ngenerator nexus_prisma {\n  provider = \"nexus-prisma\"\n  output   = \"node_modules/@generated/nexus-prisma\"\n}\n\nmodel User {\n    id           String  @id @default(cuid())\n    name         String?\n    email        String  @unique\n    arenaHandle  String?\n    password     String\n    isAdmin      Boolean @default(false)\n    decks        Deck[]\n}\n\nmodel Deck {\n    id         String  @id @default(cuid())\n    title      String?\n    list       String?\n    comments   Comment[]\n    author     User?\n\n}\n\nmodel Comment {\n    id        String  @id @default(cuid())\n    content   String?\n    author    User?\n    deck      Deck?\n}\n"
+  }
+}
+```
 
 ## RPC Response
+
 ```
 null
 ```
 
 ## Stack Trace
+
 ```bash
 thread 'main' panicked at 'The user does not have root privelege and can not create a new database: ConnectionError(Error(Some("error connecting to server: Connection refused (os error 61)"))
 
