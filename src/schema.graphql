@@ -23,11 +23,13 @@ type Deck {
 }
 
 type Mutation {
+  createDeck(list: String, title: String): Deck!
   login(email: String, password: String): AuthPayload!
   signup(arenaHandle: String, email: String, isAdmin: Boolean, name: String, password: String): AuthPayload!
 }
 
 type Query {
+  feedDecks: [Deck!]!
   feedUsers: [User!]!
   me: User!
   overComplexMe: User!

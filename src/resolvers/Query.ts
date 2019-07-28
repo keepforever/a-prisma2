@@ -67,6 +67,13 @@ export const Query = queryType({
       },
     })
 
+    t.list.field('feedDecks', {
+      type: 'Deck',
+      resolve: (_parent, _args, ctx) => {
+        return ctx.photon.decks.findMany()
+      },
+    })
+
     // t.list.field('feed', {
     //   type: 'Post',
     //   resolve: (_parent, _args, ctx) => {

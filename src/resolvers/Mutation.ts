@@ -1,12 +1,12 @@
-import { compare, hash } from 'bcrypt'
-import { sign } from 'jsonwebtoken'
-import { idArg, mutationType, stringArg, booleanArg } from 'nexus'
-import { APP_SECRET, getUserId } from '../utils'
+import { compare, hash } from "bcrypt";
+import { sign } from "jsonwebtoken";
+import { idArg, mutationType, stringArg, booleanArg } from "nexus";
+import { APP_SECRET, getUserId } from "../utils";
 
 export const Mutation = mutationType({
   definition(t) {
-    t.field('signup', {
-      type: 'AuthPayload',
+    t.field("signup", {
+      type: "AuthPayload",
       args: {
         name: stringArg({ nullable: true }),
         email: stringArg(),
@@ -15,47 +15,74 @@ export const Mutation = mutationType({
         arenaHandle: stringArg()
       },
       resolve: async (_parent, { name, email, password, arenaHandle }, ctx) => {
-        const hashedPassword = await hash(password, 10)
+        const hashedPassword = await hash(password, 10);
         const user = await ctx.photon.users.create({
           data: {
             name,
             email,
             arenaHandle,
-            password: hashedPassword,
-          },
-        })
+            password: hashedPassword
+          }
+        });
         return {
           token: sign({ userId: user.id }, APP_SECRET),
-          user,
-        }
-      },
-    })
+          user
+        };
+      }
+    });
 
-    t.field('login', {
-      type: 'AuthPayload',
+    t.field("login", {
+      type: "AuthPayload",
       args: {
         email: stringArg(),
-        password: stringArg(),
+        password: stringArg()
       },
       resolve: async (_parent, { email, password }, context) => {
         const user = await context.photon.users.findOne({
           where: {
-            email,
-          },
-        })
+            email
+          }
+        });
         if (!user) {
-          throw new Error(`No user found for email: ${email}`)
+          throw new Error(`No user found for email: ${email}`);
         }
-        const passwordValid = await compare(password, user.password)
+        const passwordValid = await compare(password, user.password);
         if (!passwordValid) {
-          throw new Error('Invalid password')
+          throw new Error("Invalid password");
         }
         return {
           token: sign({ userId: user.id }, APP_SECRET),
-          user,
-        }
+          user
+        };
+      }
+    });
+
+    t.field("createDeck", {
+      type: "Deck",
+      args: {
+        title: stringArg(),
+        list: stringArg(),
       },
-    })
+      resolve: async (_parent, { title, list }, ctx) => {
+        //   const userId = getUserId(ctx)
+        //   const user = await ctx.photon.users.findOne({
+        //   where: {
+        //     id: userId
+        //   }
+        // });
+        // if (!user) {
+        //   throw new Error(`No user found for id: ${userId}`);
+        // }
+
+        return ctx.photon.decks.create({
+            data: {
+                list,
+                title,
+                author: { connect: {id: 'cjyds5ilp0000nxrvhoqr73wn' } }
+            }
+        })
+      }
+    });
 
     // t.field('createDraft', {
     //   type: 'Post',
@@ -117,5 +144,5 @@ export const Mutation = mutationType({
     //     })
     //   },
     // })
-  },
-})
+  }
+});

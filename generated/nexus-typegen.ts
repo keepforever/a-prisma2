@@ -63,10 +63,12 @@ export interface NexusGenFieldTypes {
     title: string | null; // String
   }
   Mutation: { // field return type
+    createDeck: NexusGenRootTypes['Deck']; // Deck!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
   Query: { // field return type
+    feedDecks: NexusGenRootTypes['Deck'][]; // [Deck!]!
     feedUsers: NexusGenRootTypes['User'][]; // [User!]!
     me: NexusGenRootTypes['User']; // User!
     overComplexMe: NexusGenRootTypes['User']; // User!
@@ -94,6 +96,10 @@ export interface NexusGenArgTypes {
     }
   }
   Mutation: {
+    createDeck: { // args
+      list?: string | null; // String
+      title?: string | null; // String
+    }
     login: { // args
       email?: string | null; // String
       password?: string | null; // String
