@@ -15,3 +15,9 @@ export function getUserId(context: Context) {
     return verifiedToken && verifiedToken.userId
   }
 }
+
+export function getUserIdWithoutAuthHeaders(token: string) {  
+  const verifiedToken = verify(token, APP_SECRET) as Token
+  console.log('token = ', token, '\n', 'verifiedToken =', verifiedToken);
+  return verifiedToken && verifiedToken.userId
+}

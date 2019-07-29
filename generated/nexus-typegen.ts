@@ -99,6 +99,7 @@ export interface NexusGenArgTypes {
     createDeck: { // args
       list?: string | null; // String
       title?: string | null; // String
+      token?: string | null; // String
     }
     login: { // args
       email?: string | null; // String

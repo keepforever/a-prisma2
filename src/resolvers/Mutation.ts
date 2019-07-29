@@ -1,7 +1,7 @@
 import { compare, hash } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { idArg, mutationType, stringArg, booleanArg } from "nexus";
-import { APP_SECRET, getUserId } from "../utils";
+import { APP_SECRET, getUserId, getUserIdWithoutAuthHeaders } from "../utils";
 
 export const Mutation = mutationType({
   definition(t) {
@@ -62,8 +62,9 @@ export const Mutation = mutationType({
       args: {
         title: stringArg(),
         list: stringArg(),
+        token: stringArg()
       },
-      resolve: async (_parent, { title, list }, ctx) => {
+      resolve: async (_parent, { title, list, token }, ctx) => {
         //   const userId = getUserId(ctx)
         //   const user = await ctx.photon.users.findOne({
         //   where: {
@@ -74,11 +75,13 @@ export const Mutation = mutationType({
         //   throw new Error(`No user found for id: ${userId}`);
         // }
 
+        const userId = getUserIdWithoutAuthHeaders(token)
+
         return ctx.photon.decks.create({
             data: {
                 list,
                 title,
-                author: { connect: {id: 'cjyds5ilp0000nxrvhoqr73wn' } }
+                author: { connect: {id: userId } }
             }
         })
       }
