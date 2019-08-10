@@ -65,6 +65,7 @@ export interface NexusGenFieldTypes {
     title: string | null; // String
   }
   Mutation: { // field return type
+    addAltDeckList: NexusGenRootTypes['Deck']; // Deck!
     createDeck: NexusGenRootTypes['Deck']; // Deck!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
@@ -98,6 +99,10 @@ export interface NexusGenArgTypes {
     }
   }
   Mutation: {
+    addAltDeckList: { // args
+      altList?: string | null; // String
+      id?: string | null; // ID
+    }
     createDeck: { // args
       list?: string | null; // String
       title?: string | null; // String

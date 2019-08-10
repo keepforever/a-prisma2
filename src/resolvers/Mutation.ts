@@ -2,6 +2,7 @@ import { compare, hash } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { idArg, mutationType, stringArg, booleanArg } from "nexus";
 import { APP_SECRET, getUserId, getUserIdWithoutAuthHeaders } from "../utils";
+import { string } from "yup";
 
 export const Mutation = mutationType({
   definition(t) {
@@ -57,6 +58,21 @@ export const Mutation = mutationType({
       }
     });
 
+    t.field("addAltDeckList", {
+      type: "Deck",
+      args: {
+        altList: stringArg(),
+        id: idArg()
+      },
+      resolve: async (_parent, { altList, id }, ctx) => {
+        console.log('\n', '\n', '\n', 'Hello addAltDeckListResolver', '\n', '\n', '\n')
+        return ctx.photon.decks.update({
+                where: { id },
+                data: { altList}
+              })
+      }
+    });
+
     t.field("createDeck", {
       type: "Deck",
       args: {
@@ -87,7 +103,7 @@ export const Mutation = mutationType({
       }
     });
 
-    
+
 
     // t.field('createDraft', {
     //   type: 'Post',

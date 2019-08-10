@@ -25,6 +25,7 @@ type Deck {
 }
 
 type Mutation {
+  addAltDeckList(altList: String, id: ID): Deck!
   createDeck(list: String, title: String, token: String): Deck!
   login(email: String, password: String): AuthPayload!
   signup(arenaHandle: String, email: String, isAdmin: Boolean, name: String, password: String): AuthPayload!
