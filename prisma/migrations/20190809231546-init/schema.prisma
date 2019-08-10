@@ -9,7 +9,7 @@ generator photonjs {
 
 generator nexus_prisma {
   provider = "nexus-prisma"
-  output   = "node_modules/@generated/nexus-prisma"
+  output   = "../node_modules/@generated/nexus-prisma"
 }
 
 model User {
@@ -26,6 +26,8 @@ model Deck {
     id         String  @id @default(cuid())
     title      String?
     list       String?
+    altList    String?
+    altCard    String?
     comments   Comment[]
     author     User?
 

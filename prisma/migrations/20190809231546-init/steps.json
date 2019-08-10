@@ -1,5 +1,5 @@
 {
-  "version": "0.0.158",
+  "version": "0.1.26",
   "steps": [
     {
       "stepType": "CreateModel",
@@ -155,6 +155,26 @@
       "stepType": "CreateField",
       "model": "Deck",
       "name": "list",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "optional",
+      "isUnique": false
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Deck",
+      "name": "altList",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "optional",
+      "isUnique": false
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Deck",
+      "name": "altCard",
       "type": {
         "Base": "String"
       },

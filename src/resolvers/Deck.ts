@@ -7,6 +7,8 @@ export const Deck = objectType({
     t.model.id()
     t.model.title()
     t.model.list()
+    t.model.altList()
+    t.model.altCard()
     t.model.author()
     t.model.comments({ pagination: false })
   },

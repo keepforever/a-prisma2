@@ -56,6 +56,8 @@ export interface NexusGenFieldTypes {
     id: string; // ID!
   }
   Deck: { // field return type
+    altCard: string | null; // String
+    altList: string | null; // String
     author: NexusGenRootTypes['User'] | null; // User
     comments: NexusGenRootTypes['Comment'][] | null; // [Comment!]
     id: string; // ID!

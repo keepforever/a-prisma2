@@ -26,6 +26,8 @@ model Deck {
     id         String  @id @default(cuid())
     title      String?
     list       String?
+    altList    String?
+    altCard    String?
     comments   Comment[]
     author     User?
 
