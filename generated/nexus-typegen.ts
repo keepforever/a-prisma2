@@ -65,8 +65,9 @@ export interface NexusGenFieldTypes {
     title: string | null; // String
   }
   Mutation: { // field return type
-    addAltDeckList: NexusGenRootTypes['Deck']; // Deck!
     createDeck: NexusGenRootTypes['Deck']; // Deck!
+    deckAltCard: NexusGenRootTypes['Deck']; // Deck!
+    deckAltList: NexusGenRootTypes['Deck']; // Deck!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
@@ -99,14 +100,18 @@ export interface NexusGenArgTypes {
     }
   }
   Mutation: {
-    addAltDeckList: { // args
-      altList?: string | null; // String
-      id?: string | null; // ID
-    }
     createDeck: { // args
       list?: string | null; // String
       title?: string | null; // String
       token?: string | null; // String
+    }
+    deckAltCard: { // args
+      altCard?: string | null; // String
+      id?: string | null; // ID
+    }
+    deckAltList: { // args
+      altList?: string | null; // String
+      id?: string | null; // ID
     }
     login: { // args
       email?: string | null; // String

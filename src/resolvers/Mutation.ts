@@ -58,7 +58,7 @@ export const Mutation = mutationType({
       }
     });
 
-    t.field("addAltDeckList", {
+    t.field("deckAltList", {
       type: "Deck",
       args: {
         altList: stringArg(),
@@ -69,6 +69,35 @@ export const Mutation = mutationType({
         return ctx.photon.decks.update({
                 where: { id },
                 data: { altList}
+              })
+      }
+    });
+
+    t.field("deckAltCard", {
+      type: "Deck",
+      args: {
+        altCard: stringArg(),
+        id: idArg()
+      },
+      resolve: async (_parent, { altCard, id }, ctx) => {
+
+          console.log(`
+    #########################################################
+                    deckAltCard
+    #########################################################
+    `);
+    console.log('altCard', altCard)
+
+    console.log('id', id)
+
+
+    console.log(`
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    #########################################################
+    `);
+        return ctx.photon.decks.update({
+                where: { id },
+                data: { altCard }
               })
       }
     });
