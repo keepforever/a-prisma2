@@ -29,6 +29,7 @@ type Mutation {
   deckAltCard(altCard: String, id: ID): Deck!
   deckAltList(altList: String, id: ID): Deck!
   login(email: String, password: String): AuthPayload!
+  refreshToken(list: String, title: String, token: String): RefreshToken!
   signup(arenaHandle: String, email: String, isAdmin: Boolean, name: String, password: String): AuthPayload!
 }
 
@@ -38,6 +39,11 @@ type Query {
   me: User!
   overComplexMe: User!
   singleDeck(id: ID): Deck
+}
+
+type RefreshToken {
+  token: String!
+  userId: String!
 }
 
 type User {

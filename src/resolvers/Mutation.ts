@@ -1,198 +1,252 @@
-import { compare, hash } from "bcrypt";
-import { sign } from "jsonwebtoken";
-import { idArg, mutationType, stringArg, booleanArg } from "nexus";
-import { APP_SECRET, getUserId, getUserIdWithoutAuthHeaders } from "../utils";
-import { string } from "yup";
+import { compare, hash } from 'bcrypt';
+import { sign } from 'jsonwebtoken';
+import { idArg, mutationType, stringArg, booleanArg } from 'nexus';
+import {
+    APP_SECRET,
+    getUserId,
+    getUserIdWithoutAuthHeaders,
+    createToken,
+    myExploreContextFunction
+} from '../utils';
+import { string } from 'yup';
 
 export const Mutation = mutationType({
-  definition(t) {
-    t.field("signup", {
-      type: "AuthPayload",
-      args: {
-        name: stringArg({ nullable: true }),
-        email: stringArg(),
-        password: stringArg(),
-        isAdmin: booleanArg(),
-        arenaHandle: stringArg()
-      },
-      resolve: async (_parent, { name, email, password, arenaHandle }, ctx) => {
-        const hashedPassword = await hash(password, 10);
-        const user = await ctx.photon.users.create({
-          data: {
-            name,
-            email,
-            arenaHandle,
-            password: hashedPassword
-          }
+    definition(t) {
+        t.field('signup', {
+            type: 'AuthPayload',
+            args: {
+                name: stringArg({ nullable: true }),
+                email: stringArg(),
+                password: stringArg(),
+                isAdmin: booleanArg(),
+                arenaHandle: stringArg()
+            },
+            resolve: async (
+                _parent,
+                { name, email, password, arenaHandle },
+                ctx
+            ) => {
+                const hashedPassword = await hash(password, 10);
+                const user = await ctx.photon.users.create({
+                    data: {
+                        name,
+                        email,
+                        arenaHandle,
+                        password: hashedPassword
+                    }
+                });
+                return {
+                    token: sign({ userId: user.id }, APP_SECRET),
+                    user
+                };
+            }
         });
-        return {
-          token: sign({ userId: user.id }, APP_SECRET),
-          user
-        };
-      }
-    });
 
-    t.field("login", {
-      type: "AuthPayload",
-      args: {
-        email: stringArg(),
-        password: stringArg()
-      },
-      resolve: async (_parent, { email, password }, context) => {
-        const user = await context.photon.users.findOne({
-          where: {
-            email
-          }
+        t.field('login', {
+            type: 'AuthPayload',
+            args: {
+                email: stringArg(),
+                password: stringArg()
+            },
+            resolve: async (_parent, { email, password }, context) => {
+                const exploreContext = myExploreContextFunction(context);
+                console.log(
+                    '\n',
+                    '\n',
+                    `exploreContext = `,
+                    exploreContext,
+                    '\n',
+                    '\n'
+                );
+
+                const user = await context.photon.users.findOne({
+                    where: {
+                        email
+                    }
+                });
+                if (!user) {
+                    throw new Error(`No user found for email: ${email}`);
+                }
+                const passwordValid = await compare(password, user.password);
+                if (!passwordValid) {
+                    throw new Error('Invalid password');
+                }
+                return {
+                    token: sign({ userId: user.id }, APP_SECRET),
+                    user
+                };
+            }
         });
-        if (!user) {
-          throw new Error(`No user found for email: ${email}`);
-        }
-        const passwordValid = await compare(password, user.password);
-        if (!passwordValid) {
-          throw new Error("Invalid password");
-        }
-        return {
-          token: sign({ userId: user.id }, APP_SECRET),
-          user
-        };
-      }
-    });
 
-    t.field("deckAltList", {
-      type: "Deck",
-      args: {
-        altList: stringArg(),
-        id: idArg()
-      },
-      resolve: async (_parent, { altList, id }, ctx) => {
-        console.log('\n', '\n', '\n', 'Hello addAltDeckListResolver', '\n', '\n', '\n')
-        return ctx.photon.decks.update({
-                where: { id },
-                data: { altList}
-              })
-      }
-    });
+        t.field('refreshToken', {
+            type: 'RefreshToken',
+            args: {
+                title: stringArg(),
+                list: stringArg(),
+                token: stringArg()
+            },
+            resolve: async (_parent, args, ctx) => {
+                const userId = getUserId(ctx);
 
-    t.field("deckAltCard", {
-      type: "Deck",
-      args: {
-        altCard: stringArg(),
-        id: idArg()
-      },
-      resolve: async (_parent, { altCard, id }, ctx) => {
+                console.log(`
+                #########################################################
+                                refreshToken
+                #########################################################
+                `);
 
-          console.log(`
+                console.log('\n', '\n', `userId = `, userId, '\n', '\n');
+
+                console.log(`
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                #########################################################
+                `);
+
+                return {
+                    token: createToken(userId),
+                    userId
+                };
+            }
+        });
+
+        t.field('deckAltList', {
+            type: 'Deck',
+            args: {
+                altList: stringArg(),
+                id: idArg()
+            },
+            resolve: async (_parent, { altList, id }, ctx) => {
+                console.log(
+                    '\n',
+                    '\n',
+                    '\n',
+                    'Hello addAltDeckListResolver',
+                    '\n',
+                    '\n',
+                    '\n'
+                );
+                return ctx.photon.decks.update({
+                    where: { id },
+                    data: { altList }
+                });
+            }
+        });
+
+        t.field('deckAltCard', {
+            type: 'Deck',
+            args: {
+                altCard: stringArg(),
+                id: idArg()
+            },
+            resolve: async (_parent, { altCard, id }, ctx) => {
+                console.log(`
     #########################################################
                     deckAltCard
     #########################################################
     `);
-    console.log('altCard', altCard)
+                console.log('altCard', altCard);
 
-    console.log('id', id)
+                console.log('id', id);
 
-
-    console.log(`
+                console.log(`
     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     #########################################################
     `);
-        return ctx.photon.decks.update({
-                where: { id },
-                data: { altCard }
-              })
-      }
-    });
-
-    t.field("createDeck", {
-      type: "Deck",
-      args: {
-        title: stringArg(),
-        list: stringArg(),
-        token: stringArg()
-      },
-      resolve: async (_parent, { title, list, token }, ctx) => {
-        //   const userId = getUserId(ctx)
-        //   const user = await ctx.photon.users.findOne({
-        //   where: {
-        //     id: userId
-        //   }
-        // });
-        // if (!user) {
-        //   throw new Error(`No user found for id: ${userId}`);
-        // }
-
-        const userId = getUserIdWithoutAuthHeaders(token)
-
-        return ctx.photon.decks.create({
-            data: {
-                list,
-                title,
-                author: { connect: {id: userId } }
+                return ctx.photon.decks.update({
+                    where: { id },
+                    data: { altCard }
+                });
             }
-        })
-      }
-    });
+        });
 
+        t.field('createDeck', {
+            type: 'Deck',
+            args: {
+                title: stringArg(),
+                list: stringArg(),
+                token: stringArg()
+            },
+            resolve: async (_parent, { title, list, token }, ctx) => {
+                //   const userId = getUserId(ctx)
+                //   const user = await ctx.photon.users.findOne({
+                //   where: {
+                //     id: userId
+                //   }
+                // });
+                // if (!user) {
+                //   throw new Error(`No user found for id: ${userId}`);
+                // }
 
+                const userId = getUserIdWithoutAuthHeaders(token);
 
-    // t.field('createDraft', {
-    //   type: 'Post',
-    //   args: {
-    //     title: stringArg(),
-    //     content: stringArg({ nullable: true }),
-    //   },
-    //   resolve: (_parent, { title }, ctx) => {
-    //     const userId = getUserId(ctx)
-    //     return ctx.photon.posts.create({
-    //       data: {
-    //         title,
-    //         published: false,
-    //         author: { connect: { id: userId } },
-    //       },
-    //     })
-    //   },
-    // })
+                return ctx.photon.decks.create({
+                    data: {
+                        list,
+                        title,
+                        author: { connect: { id: userId } }
+                    }
+                });
+            }
+        });
 
-    // t.field('createProfile', {
-    //   type: 'Profile',
-    //   args: {
-    //     description: stringArg(),
-    //     isVerified: booleanArg(),
-    //   },
-    //   resolve: (_parent, { description, isVerified }, ctx) => {
-    //     const userId = getUserId(ctx)
-    //     return ctx.photon.profiles.create({
-    //       data: {
-    //         description,
-    //         isVerified,
-    //         author: { connect: { id: userId } },
-    //       },
-    //     })
-    //   },
-    // })
+        // t.field('createDraft', {
+        //   type: 'Post',
+        //   args: {
+        //     title: stringArg(),
+        //     content: stringArg({ nullable: true }),
+        //   },
+        //   resolve: (_parent, { title }, ctx) => {
+        //     const userId = getUserId(ctx)
+        //     return ctx.photon.posts.create({
+        //       data: {
+        //         title,
+        //         published: false,
+        //         author: { connect: { id: userId } },
+        //       },
+        //     })
+        //   },
+        // })
 
-    // t.field('deletePost', {
-    //   type: 'Post',
-    //   nullable: true,
-    //   args: { id: idArg() },
-    //   resolve: (_parent, { id }, ctx) => {
-    //     return ctx.photon.posts.delete({
-    //       where: {
-    //         id,
-    //       },
-    //     })
-    //   },
-    // })
+        // t.field('createProfile', {
+        //   type: 'Profile',
+        //   args: {
+        //     description: stringArg(),
+        //     isVerified: booleanArg(),
+        //   },
+        //   resolve: (_parent, { description, isVerified }, ctx) => {
+        //     const userId = getUserId(ctx)
+        //     return ctx.photon.profiles.create({
+        //       data: {
+        //         description,
+        //         isVerified,
+        //         author: { connect: { id: userId } },
+        //       },
+        //     })
+        //   },
+        // })
 
-    // t.field('publish', {
-    //   type: 'Post',
-    //   nullable: true,
-    //   args: { id: idArg() },
-    //   resolve: (_parent, { id }, ctx) => {
-    //     return ctx.photon.posts.update({
-    //       where: { id },
-    //       data: { published: true },
-    //     })
-    //   },
-    // })
-  }
+        // t.field('deletePost', {
+        //   type: 'Post',
+        //   nullable: true,
+        //   args: { id: idArg() },
+        //   resolve: (_parent, { id }, ctx) => {
+        //     return ctx.photon.posts.delete({
+        //       where: {
+        //         id,
+        //       },
+        //     })
+        //   },
+        // })
+
+        // t.field('publish', {
+        //   type: 'Post',
+        //   nullable: true,
+        //   args: { id: idArg() },
+        //   resolve: (_parent, { id }, ctx) => {
+        //     return ctx.photon.posts.update({
+        //       where: { id },
+        //       data: { published: true },
+        //     })
+        //   },
+        // })
+    }
 });

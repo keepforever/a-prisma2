@@ -33,6 +33,10 @@ export interface NexusGenRootTypes {
   Deck: photon.Deck;
   Mutation: {};
   Query: {};
+  RefreshToken: { // root type
+    token: string; // String!
+    userId: string; // String!
+  }
   User: photon.User;
   String: string;
   Int: number;
@@ -69,6 +73,7 @@ export interface NexusGenFieldTypes {
     deckAltCard: NexusGenRootTypes['Deck']; // Deck!
     deckAltList: NexusGenRootTypes['Deck']; // Deck!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    refreshToken: NexusGenRootTypes['RefreshToken']; // RefreshToken!
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
   Query: { // field return type
@@ -77,6 +82,10 @@ export interface NexusGenFieldTypes {
     me: NexusGenRootTypes['User']; // User!
     overComplexMe: NexusGenRootTypes['User']; // User!
     singleDeck: NexusGenRootTypes['Deck'] | null; // Deck
+  }
+  RefreshToken: { // field return type
+    token: string; // String!
+    userId: string; // String!
   }
   User: { // field return type
     arenaHandle: string | null; // String
@@ -117,6 +126,11 @@ export interface NexusGenArgTypes {
       email?: string | null; // String
       password?: string | null; // String
     }
+    refreshToken: { // args
+      list?: string | null; // String
+      title?: string | null; // String
+      token?: string | null; // String
+    }
     signup: { // args
       arenaHandle?: string | null; // String
       email?: string | null; // String
@@ -146,7 +160,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "AuthPayload" | "Comment" | "Deck" | "Mutation" | "Query" | "User";
+export type NexusGenObjectNames = "AuthPayload" | "Comment" | "Deck" | "Mutation" | "Query" | "RefreshToken" | "User";
 
 export type NexusGenInputNames = never;
 
