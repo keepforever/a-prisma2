@@ -7,6 +7,18 @@ export const Query = queryType({
             type: 'User',
             resolve: (_parent, _args, ctx) => {
                 const userId = getUserId(ctx);
+                console.log(`
+                #########################################################
+                                Me Query
+                #########################################################
+                `);
+
+                console.log('\n', '\n', `userId = `, userId, '\n', '\n');
+
+                console.log(`
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                #########################################################
+                `);
                 return ctx.photon.users.findOne({
                     where: {
                         id: userId

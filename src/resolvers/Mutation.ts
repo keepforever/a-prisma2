@@ -87,20 +87,6 @@ export const Mutation = mutationType({
             },
             resolve: async (_parent, args, ctx) => {
                 const userId = getUserId(ctx);
-
-                console.log(`
-                #########################################################
-                                refreshToken
-                #########################################################
-                `);
-
-                console.log('\n', '\n', `userId = `, userId, '\n', '\n');
-
-                console.log(`
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                #########################################################
-                `);
-
                 return {
                     token: createToken(userId),
                     userId
