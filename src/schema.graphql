@@ -21,11 +21,12 @@ type Deck {
   comments(after: String, before: String, first: Int, last: Int, skip: Int): [Comment!]
   id: ID!
   list: String
+  sideBoardList: String
   title: String
 }
 
 type Mutation {
-  createDeck(list: String, title: String, token: String): Deck!
+  createDeck(list: String, sideBoardList: String, title: String): Deck!
   deckAltCard(altCard: String, id: ID): Deck!
   deckAltList(altList: String, id: ID): Deck!
   login(email: String, password: String): AuthPayload!

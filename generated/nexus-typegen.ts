@@ -66,6 +66,7 @@ export interface NexusGenFieldTypes {
     comments: NexusGenRootTypes['Comment'][] | null; // [Comment!]
     id: string; // ID!
     list: string | null; // String
+    sideBoardList: string | null; // String
     title: string | null; // String
   }
   Mutation: { // field return type
@@ -111,8 +112,8 @@ export interface NexusGenArgTypes {
   Mutation: {
     createDeck: { // args
       list?: string | null; // String
+      sideBoardList?: string | null; // String
       title?: string | null; // String
-      token?: string | null; // String
     }
     deckAltCard: { // args
       altCard?: string | null; // String

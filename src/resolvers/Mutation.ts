@@ -149,9 +149,19 @@ export const Mutation = mutationType({
             args: {
                 title: stringArg(),
                 list: stringArg(),
-                token: stringArg()
+                sideBoardList: stringArg()
             },
-            resolve: async (_parent, { title, list, token }, ctx) => {
+            resolve: async (_parent, { title, list, sideBoardList }, ctx) => {
+                console.log(
+                    '\n',
+                    '\n',
+                    `title, list, sideBoardList = `,
+                    title,
+                    list,
+                    sideBoardList,
+                    '\n',
+                    '\n'
+                );
                 //   const userId = getUserId(ctx)
                 //   const user = await ctx.photon.users.findOne({
                 //   where: {
@@ -162,12 +172,13 @@ export const Mutation = mutationType({
                 //   throw new Error(`No user found for id: ${userId}`);
                 // }
 
-                const userId = getUserIdWithoutAuthHeaders(token);
+                const userId = getUserId(ctx);
 
                 return ctx.photon.decks.create({
                     data: {
                         list,
                         title,
+                        sideBoardList,
                         author: { connect: { id: userId } }
                     }
                 });

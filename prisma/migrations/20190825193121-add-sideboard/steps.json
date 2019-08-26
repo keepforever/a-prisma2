@@ -1,0 +1,15 @@
+{
+  "version": "0.1.26",
+  "steps": [
+    {
+      "stepType": "CreateField",
+      "model": "Deck",
+      "name": "sideBoardList",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "optional",
+      "isUnique": false
+    }
+  ]
+}

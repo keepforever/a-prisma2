@@ -8,6 +8,7 @@ export const Deck = objectType({
         t.model.title();
         t.model.list();
         t.model.altList();
+        t.model.sideBoardList();
         t.model.altCard();
         t.model.author();
         t.model.comments({ pagination: false });
