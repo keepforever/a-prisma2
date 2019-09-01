@@ -1,13 +1,7 @@
 import { compare, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { idArg, mutationType, stringArg, booleanArg } from 'nexus';
-import {
-    APP_SECRET,
-    getUserId,
-    getUserIdWithoutAuthHeaders,
-    createToken,
-    myExploreContextFunction
-} from '../utils';
+import { APP_SECRET, getUserId, createToken } from '../utils';
 import { string } from 'yup';
 
 export const Mutation = mutationType({
@@ -49,16 +43,6 @@ export const Mutation = mutationType({
                 password: stringArg()
             },
             resolve: async (_parent, { email, password }, context) => {
-                const exploreContext = myExploreContextFunction(context);
-                console.log(
-                    '\n',
-                    '\n',
-                    `exploreContext = `,
-                    exploreContext,
-                    '\n',
-                    '\n'
-                );
-
                 const user = await context.photon.users.findOne({
                     where: {
                         email
@@ -101,15 +85,6 @@ export const Mutation = mutationType({
                 id: idArg()
             },
             resolve: async (_parent, { altList, id }, ctx) => {
-                console.log(
-                    '\n',
-                    '\n',
-                    '\n',
-                    'Hello addAltDeckListResolver',
-                    '\n',
-                    '\n',
-                    '\n'
-                );
                 return ctx.photon.decks.update({
                     where: { id },
                     data: { altList }
@@ -124,19 +99,6 @@ export const Mutation = mutationType({
                 id: idArg()
             },
             resolve: async (_parent, { altCard, id }, ctx) => {
-                console.log(`
-    #########################################################
-                    deckAltCard
-    #########################################################
-    `);
-                console.log('altCard', altCard);
-
-                console.log('id', id);
-
-                console.log(`
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    #########################################################
-    `);
                 return ctx.photon.decks.update({
                     where: { id },
                     data: { altCard }
@@ -152,29 +114,7 @@ export const Mutation = mutationType({
                 sideBoardList: stringArg()
             },
             resolve: async (_parent, { title, list, sideBoardList }, ctx) => {
-                console.log(
-                    '\n',
-                    '\n',
-                    `title, list, sideBoardList = `,
-                    title,
-                    list,
-                    sideBoardList,
-                    '\n',
-                    '\n'
-                );
-                //   const userId = getUserId(ctx)
-                //   const user = await ctx.photon.users.findOne({
-                //   where: {
-                //     id: userId
-                //   }
-                // });
-                // if (!user) {
-                //   throw new Error(`No user found for id: ${userId}`);
-                // }
-
                 const userId = getUserId(ctx);
-
-                console.log('\n', '\n', `userId = `, userId, '\n', '\n');
 
                 return ctx.photon.decks.create({
                     data: {
@@ -186,66 +126,5 @@ export const Mutation = mutationType({
                 });
             }
         });
-
-        // t.field('createDraft', {
-        //   type: 'Post',
-        //   args: {
-        //     title: stringArg(),
-        //     content: stringArg({ nullable: true }),
-        //   },
-        //   resolve: (_parent, { title }, ctx) => {
-        //     const userId = getUserId(ctx)
-        //     return ctx.photon.posts.create({
-        //       data: {
-        //         title,
-        //         published: false,
-        //         author: { connect: { id: userId } },
-        //       },
-        //     })
-        //   },
-        // })
-
-        // t.field('createProfile', {
-        //   type: 'Profile',
-        //   args: {
-        //     description: stringArg(),
-        //     isVerified: booleanArg(),
-        //   },
-        //   resolve: (_parent, { description, isVerified }, ctx) => {
-        //     const userId = getUserId(ctx)
-        //     return ctx.photon.profiles.create({
-        //       data: {
-        //         description,
-        //         isVerified,
-        //         author: { connect: { id: userId } },
-        //       },
-        //     })
-        //   },
-        // })
-
-        // t.field('deletePost', {
-        //   type: 'Post',
-        //   nullable: true,
-        //   args: { id: idArg() },
-        //   resolve: (_parent, { id }, ctx) => {
-        //     return ctx.photon.posts.delete({
-        //       where: {
-        //         id,
-        //       },
-        //     })
-        //   },
-        // })
-
-        // t.field('publish', {
-        //   type: 'Post',
-        //   nullable: true,
-        //   args: { id: idArg() },
-        //   resolve: (_parent, { id }, ctx) => {
-        //     return ctx.photon.posts.update({
-        //       where: { id },
-        //       data: { published: true },
-        //     })
-        //   },
-        // })
     }
 });

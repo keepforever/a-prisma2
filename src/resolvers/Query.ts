@@ -7,18 +7,11 @@ export const Query = queryType({
             type: 'User',
             resolve: (_parent, _args, ctx) => {
                 const userId = getUserId(ctx);
-                console.log(`
-                #########################################################
-                                Me Query
-                #########################################################
-                `);
 
-                console.log('\n', '\n', `userId = `, userId, '\n', '\n');
-
-                console.log(`
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                #########################################################
-                `);
+                if (!userId) {
+                    throw new Error('No user found at the given Id');
+                    return null;
+                }
                 return ctx.photon.users.findOne({
                     where: {
                         id: userId
@@ -44,13 +37,6 @@ export const Query = queryType({
                         }
                     })
                     .decks();
-
-                console.log(' #### #### #### ', '\n');
-                console.log(' #### #### #### ', '\n');
-                console.log(' posts ', decks);
-                console.log('whoAmI = ', whoAmI);
-                console.log(' #### #### #### ');
-                console.log(' #### #### #### ');
 
                 return ctx.photon.users.findOne({
                     where: {

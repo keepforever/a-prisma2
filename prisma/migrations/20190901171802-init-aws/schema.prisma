@@ -1,0 +1,42 @@
+datasource db {
+    provider = "postgresql"
+    url      = "postgresql://postgres:2Cu92EeHkwj2E@deck-app-database-1.cgd4q1qfb0nk.us-east-2.rds.amazonaws.com"
+}
+
+generator photonjs {
+    provider = "photonjs"
+}
+
+generator nexus_prisma {
+    provider = "nexus-prisma"
+    output   = "../node_modules/@generated/nexus-prisma"
+}
+
+model User {
+    id          String  @id @default(cuid())
+    name        String?
+    email       String  @unique
+    arenaHandle String?
+    password    String
+    isAdmin     Boolean @default(false)
+    decks       Deck[]
+}
+
+model Deck {
+    id            String    @id @default(cuid())
+    title         String?
+    list          String?
+    sideBoardList String?
+    altList       String?
+    altCard       String?
+    comments      Comment[]
+    author        User?
+
+}
+
+model Comment {
+    id      String  @id @default(cuid())
+    content String?
+    author  User?
+    deck    Deck?
+}
