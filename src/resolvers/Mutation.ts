@@ -174,6 +174,8 @@ export const Mutation = mutationType({
 
                 const userId = getUserId(ctx);
 
+                console.log('\n', '\n', `userId = `, userId, '\n', '\n');
+
                 return ctx.photon.decks.create({
                     data: {
                         list,

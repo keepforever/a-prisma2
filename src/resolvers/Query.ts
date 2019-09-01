@@ -1,4 +1,4 @@
-import { idArg, queryType, stringArg } from 'nexus';
+import { idArg, queryType, stringArg, intArg } from 'nexus';
 import { getUserId } from '../utils';
 
 export const Query = queryType({
@@ -84,6 +84,21 @@ export const Query = queryType({
             type: 'Deck',
             resolve: (_parent, _args, ctx) => {
                 return ctx.photon.decks.findMany();
+            }
+        });
+
+        t.list.field('deckConnection', {
+            type: 'Deck',
+            args: {
+                first: intArg(),
+                last: stringArg()
+            },
+            resolve: (_parent, args, ctx) => {
+                const { first, last } = args;
+                return ctx.photon.decks.findMany({
+                    first: first,
+                    after: last
+                });
             }
         });
 

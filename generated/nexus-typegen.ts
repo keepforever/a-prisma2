@@ -78,6 +78,7 @@ export interface NexusGenFieldTypes {
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
   Query: { // field return type
+    deckConnection: NexusGenRootTypes['Deck'][]; // [Deck!]!
     feedDecks: NexusGenRootTypes['Deck'][]; // [Deck!]!
     feedUsers: NexusGenRootTypes['User'][]; // [User!]!
     me: NexusGenRootTypes['User']; // User!
@@ -141,6 +142,10 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    deckConnection: { // args
+      first?: number | null; // Int
+      last?: string | null; // String
+    }
     singleDeck: { // args
       id?: string | null; // ID
     }

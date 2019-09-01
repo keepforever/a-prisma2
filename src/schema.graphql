@@ -35,6 +35,7 @@ type Mutation {
 }
 
 type Query {
+  deckConnection(first: Int, last: String): [Deck!]!
   feedDecks: [Deck!]!
   feedUsers: [User!]!
   me: User!
