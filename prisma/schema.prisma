@@ -1,6 +1,6 @@
 datasource db {
     provider = "postgresql"
-    url      = "postgresql://postgres:postgres@localhost:5432/prisma_two_db?schema=prisma_two_db_schema"
+    url      = "postgresql://postgres:2Cu92EeHkwj2E@deck-app-database-1.cgd4q1qfb0nk.us-east-2.rds.amazonaws.com"
 }
 
 generator photonjs {

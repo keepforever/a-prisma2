@@ -4,3 +4,6 @@ pgdata/
 *.rdb
 dump.rdb
 .env
+
+# misc
+aws_postgres.md
