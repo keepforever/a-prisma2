@@ -1,6 +1,6 @@
 1. Start Postgres Docker Conatiner
 
-### 10-27-2019
+### 10-27-2019, new spin up postgres command
 
 ```sh
 docker run -p 5432:5432 -d \
@@ -10,7 +10,7 @@ docker run -p 5432:5432 -d \
     -v pgdata:/var/lib/postgresql/data \
     postgres
 ```
-
+### Old spin up postgres command
 ```sh
 docker run -p 5432:5432 -d \
     -e POSTGRES_PASSWORD=postgres \
