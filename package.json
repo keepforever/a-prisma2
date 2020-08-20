@@ -5,7 +5,7 @@
     "main": "index.js",
     "dependencies": {
         "@prisma/nexus": "^0.0.1",
-        "bcrypt": "^3.0.6",
+        "bcrypt": "^5.0.0",
         "graphql-shield": "5.3.8",
         "graphql-yoga": "^1.18.0",
         "jsonwebtoken": "8.5.1",
